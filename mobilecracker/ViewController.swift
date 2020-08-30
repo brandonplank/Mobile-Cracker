@@ -119,6 +119,68 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
     
+    var textField: UITextField?
+
+    func configurationTextField(textField: UITextField!) {
+        if (textField) != nil {
+            self.textField = textField!        //Save reference to the UITextField
+            self.textField?.placeholder = "Password";
+        }
+    }
+    
+    @IBAction func passwordHashFunction(_ sender: Any) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Notice", message: "Please input a password", preferredStyle: UIAlertController.Style.alert)
+            alert.addTextField(configurationHandler: self.configurationTextField)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+                self.dismiss(animated: true, completion: {
+                    if self.textField?.text == nil || self.textField?.text! == ""{
+                        let alert2 = UIAlertController(title: "Error", message: "Please input a password.", preferredStyle: .alert)
+                        alert2.addAction(UIKit.UIAlertAction(title: "OK", style: .default, handler: { action in
+                        }))
+                        self.present(alert2, animated: true, completion: nil)
+                    } else {
+                        print("hashing")
+                        var hash: String = ""
+                        let inputtedText = self.textField?.text
+                        switch self.hashMethod {
+                        case "SHA256":
+                            hash = "\(inputtedText!.sha512().map { String(format: "%02hhx", $0) }.joined())"
+                        case "SHA512":
+                            hash = "\(inputtedText!.sha512().map { String(format: "%02hhx", $0) }.joined())"
+                        case "MD5":
+                            hash = "\(inputtedText!.md5)"
+                        case "BCrypt":
+                            hash = try! BCrypt.Hash.make(message: inputtedText!).makeString()
+                        default:
+                            break
+                        }
+                        UIPasteboard.general.string = hash
+                        let alert2 = UIAlertController(title: "Notice", message: "\(self.hashMethod): \(hash)\n\nCopied to clipboard!", preferredStyle: .alert)
+                        alert2.addAction(UIKit.UIAlertAction(title: "OK", style: .default, handler: { action in
+                              switch action.style{
+                              case .default:
+                                    print("default")
+
+                              case .cancel:
+                                    print("cancel")
+
+                              case .destructive:
+                                    print("destructive")
+                              @unknown default:
+                                break
+                            }}))
+                        self.present(alert2, animated: true, completion: nil)
+                        
+                    }
+                })
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

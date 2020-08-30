@@ -26,7 +26,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="9x7-CA-UIU"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="vHr-F6-Ntz">
@@ -72,6 +72,7 @@
                                     <constraint firstAttribute="height" constant="50" id="9IP-57-5sV"/>
                                     <constraint firstAttribute="width" constant="180" id="rBW-x2-HrR"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
                                 <state key="normal" title="Start">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -84,9 +85,35 @@
                                     <action selector="hash:" destination="lNS-Oi-JdL" eventType="touchUpInside" id="DFU-OA-PGb"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XGO-Kt-4uR">
+                                <rect key="frame" x="117" y="730" width="180" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="180" id="Tge-Ew-F7K"/>
+                                    <constraint firstAttribute="height" constant="50" id="djS-92-ZRV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                <state key="normal" title="Hash Password">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="passwordHashFunction:" destination="lNS-Oi-JdL" eventType="touchUpInside" id="KIl-Yd-LJU"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hash: None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkj-MM-bFb">
                                 <rect key="frame" x="20" y="269" width="374" height="20"/>
                                 <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Made with ❤️ by @_bplank" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cV9-rf-9tX">
+                                <rect key="frame" x="104.5" y="522" width="205" height="17"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -97,18 +124,22 @@
                             <constraint firstItem="qsT-kZ-AFn" firstAttribute="trailing" secondItem="vHr-F6-Ntz" secondAttribute="trailing" constant="20" id="5Oe-JD-yM5"/>
                             <constraint firstItem="qsT-kZ-AFn" firstAttribute="bottom" secondItem="dOE-qQ-0rH" secondAttribute="bottom" constant="11" id="6tQ-QK-IB0"/>
                             <constraint firstItem="pkj-MM-bFb" firstAttribute="top" secondItem="JWm-Oo-b1J" secondAttribute="bottom" constant="8" id="Bux-Mb-sKZ"/>
+                            <constraint firstItem="cV9-rf-9tX" firstAttribute="centerX" secondItem="EMg-LY-L23" secondAttribute="centerX" id="ExV-ak-3lN"/>
                             <constraint firstItem="qsT-kZ-AFn" firstAttribute="trailing" secondItem="jyb-Tm-985" secondAttribute="trailing" constant="20" id="Hhf-NA-TVC"/>
                             <constraint firstItem="vHr-F6-Ntz" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="Iev-IL-AzC"/>
+                            <constraint firstItem="XGO-Kt-4uR" firstAttribute="centerX" secondItem="EMg-LY-L23" secondAttribute="centerX" id="Io4-Dp-TbE"/>
                             <constraint firstItem="Wc6-Hm-x7L" firstAttribute="top" secondItem="vxM-bk-u48" secondAttribute="bottom" constant="17" id="JmT-JI-UYJ"/>
                             <constraint firstItem="vHr-F6-Ntz" firstAttribute="top" secondItem="K8p-Kb-Pah" secondAttribute="bottom" constant="18" id="Jqj-Vp-uPF"/>
                             <constraint firstItem="Cht-Un-RUE" firstAttribute="top" secondItem="qsT-kZ-AFn" secondAttribute="top" constant="38" id="NlA-cu-udO"/>
                             <constraint firstItem="K8p-Kb-Pah" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="55" id="Qr6-bs-Vkx"/>
                             <constraint firstItem="qsT-kZ-AFn" firstAttribute="trailing" secondItem="K8p-Kb-Pah" secondAttribute="trailing" constant="54" id="RZp-dn-1eC"/>
                             <constraint firstItem="JWm-Oo-b1J" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="RZs-xE-U4p"/>
+                            <constraint firstItem="cV9-rf-9tX" firstAttribute="top" secondItem="vHr-F6-Ntz" secondAttribute="bottom" constant="8" id="Ynx-aZ-38j"/>
                             <constraint firstItem="pkj-MM-bFb" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="akO-ro-99K"/>
                             <constraint firstItem="dOE-qQ-0rH" firstAttribute="centerX" secondItem="EMg-LY-L23" secondAttribute="centerX" id="dpf-3a-tsa"/>
                             <constraint firstItem="qsT-kZ-AFn" firstAttribute="trailing" secondItem="pkj-MM-bFb" secondAttribute="trailing" constant="20" id="eni-k4-zUL"/>
                             <constraint firstItem="jyb-Tm-985" firstAttribute="top" secondItem="Wc6-Hm-x7L" secondAttribute="bottom" constant="8" id="fL2-K5-jHz"/>
+                            <constraint firstItem="dOE-qQ-0rH" firstAttribute="top" secondItem="XGO-Kt-4uR" secondAttribute="bottom" constant="21" id="fTE-bT-ldn"/>
                             <constraint firstItem="Wc6-Hm-x7L" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="j3u-wC-7CF"/>
                             <constraint firstItem="Cht-Un-RUE" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="obF-IB-pYR"/>
                             <constraint firstItem="jyb-Tm-985" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="pFm-QE-h0I"/>

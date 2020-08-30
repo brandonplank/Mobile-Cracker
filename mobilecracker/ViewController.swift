@@ -120,12 +120,54 @@ class ViewController: UIViewController {
     }
     
     var textField: UITextField?
+    var canread = true
 
     func configurationTextField(textField: UITextField!) {
         if (textField) != nil {
             self.textField = textField!        //Save reference to the UITextField
             self.textField?.placeholder = "Password";
         }
+    }
+    
+    func getHashFromType(_ text: String) -> String {
+        var hash: String = ""
+        switch self.hashMethod {
+        case "SHA512":
+            switch canread {
+            case true:
+                hash = "\(text.sha512().map { String(format: "%02hhx", $0) }.joined())"
+            default:
+                print("Not making blank SHA256")
+                hash = "None"
+            }
+        case "BCrypt":
+            switch canread {
+            case true:
+                hash = try! BCrypt.Hash.make(message: text).makeString()
+            default:
+                print("Not making blank BCrypt")
+                hash = "None"
+            }
+        case "SHA256":
+            switch canread {
+            case true:
+                hash = "\(text.sha256().map { String(format: "%02hhx", $0) }.joined())"
+            default:
+                print("Not making blank SHA256")
+                hash = "None"
+            }
+        case "MD5":
+            switch canread {
+            case true:
+                hash = "\(text.md5)"
+            default:
+                print("Not making blank md5")
+                hash = "None"
+            }
+        default:
+            break
+        }
+        return hash
     }
     
     @IBAction func passwordHashFunction(_ sender: Any) {
@@ -144,18 +186,7 @@ class ViewController: UIViewController {
                         print("hashing")
                         var hash: String = ""
                         let inputtedText = self.textField?.text
-                        switch self.hashMethod {
-                        case "SHA256":
-                            hash = "\(inputtedText!.sha512().map { String(format: "%02hhx", $0) }.joined())"
-                        case "SHA512":
-                            hash = "\(inputtedText!.sha512().map { String(format: "%02hhx", $0) }.joined())"
-                        case "MD5":
-                            hash = "\(inputtedText!.md5)"
-                        case "BCrypt":
-                            hash = try! BCrypt.Hash.make(message: inputtedText!).makeString()
-                        default:
-                            break
-                        }
+                        hash = self.getHashFromType(inputtedText!)
                         UIPasteboard.general.string = hash
                         let alert2 = UIAlertController(title: "Notice", message: "\(self.hashMethod): \(hash)\n\nCopied to clipboard!", preferredStyle: .alert)
                         alert2.addAction(UIKit.UIAlertAction(title: "OK", style: .default, handler: { action in
@@ -259,7 +290,6 @@ class ViewController: UIViewController {
                             
                             var hash: String
                             var i = 0
-                            var canread = true
                             //now start :o
                             while let line = readLine() {
                                 DispatchQueue.main.async {
@@ -270,49 +300,14 @@ class ViewController: UIViewController {
                                 switch line {
                                 case "":
                                     print("Detected blank line, not trying to read that.")
-                                    canread = false
+                                    self.canread = false
                                 default:
-                                    canread = true
+                                    self.canread = true
                                     break
                                 }
-                                switch self.hashMethod {
-                                case "SHA512":
-                                    switch canread {
-                                    case true:
-                                        hash = "\(line.sha512().map { String(format: "%02hhx", $0) }.joined())"
-                                    default:
-                                        print("Not making blank SHA256")
-                                        hash = "None"
-                                    }
-                                case "BCrypt":
-                                    switch canread {
-                                    case true:
-                                        hash = try! BCrypt.Hash.make(message: line).makeString()
-                                    default:
-                                        print("Not making blank BCrypt")
-                                        hash = "None"
-                                    }
-                                case "SHA256":
-                                    switch canread {
-                                    case true:
-                                        hash = "\(line.sha256().map { String(format: "%02hhx", $0) }.joined())"
-                                    default:
-                                        print("Not making blank SHA256")
-                                        hash = "None"
-                                    }
-                                case "MD5":
-                                    switch canread {
-                                    case true:
-                                        hash = "\(line.md5)"
-                                    default:
-                                        print("Not making blank md5")
-                                        hash = "None"
-                                    }
-                                default:
-                                    hash = ""
-                                }
+                                hash = self.getHashFromType(line)
                                 DispatchQueue.main.async {
-                                    switch canread{
+                                    switch self.canread{
                                     case true:
                                         self.hashview.text = "Hash: \(hash)"
                                     default:

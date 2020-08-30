@@ -1,0 +1,9 @@
+.DS_Store
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+build/
+/compileAll/output
+/compileAll/input/Mobile Cracker.app
+/DerivedData/
+

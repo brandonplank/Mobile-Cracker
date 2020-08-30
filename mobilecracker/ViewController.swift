@@ -86,7 +86,13 @@ extension String {
             CC_MD5(bytes.baseAddress, CC_LONG(data.count), &hash)
             return hash
         }
-        return hash.map { String(format: "%02x", $0) }.joined()
+        let hashmd5 = hash.map { String(format: "%02x", $0) }.joined()
+        let characterset = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+        if hashmd5.rangeOfCharacter(from: characterset.inverted) != nil {
+            print("string contains special characters")
+            return "Error, hash is invalid"
+        }
+        return hashmd5
     }
     func sha256() -> Data {
         return self.data(using: .utf8)!.sha256()

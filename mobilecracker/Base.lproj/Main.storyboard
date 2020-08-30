@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lNS-Oi-JdL">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="p9p-H4-sBi">
+            <objects>
+                <viewController id="lNS-Oi-JdL" customClass="ViewController" customModule="Mobile_Cracker" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EMg-LY-L23">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Cracker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cht-Un-RUE">
+                                <rect key="frame" x="20" y="82" width="220" height="31"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Hash" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="K8p-Kb-Pah">
+                                <rect key="frame" x="55" y="431" width="305" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="9x7-CA-UIU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="vHr-F6-Ntz">
+                                <rect key="frame" x="20" y="483" width="374" height="32"/>
+                                <segments>
+                                    <segment title="SHA512"/>
+                                    <segment title="MD5"/>
+                                    <segment title="SHA256"/>
+                                    <segment title="BCrypt"/>
+                                </segments>
+                                <connections>
+                                    <action selector="indexChanged:" destination="lNS-Oi-JdL" eventType="valueChanged" id="lWn-up-jaX"/>
+                                </connections>
+                            </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vxM-bk-u48">
+                                <rect key="frame" x="20" y="148" width="72" height="20"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password: None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wc6-Hm-x7L">
+                                <rect key="frame" x="20" y="185" width="374" height="20"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hashes scanned: None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jyb-Tm-985">
+                                <rect key="frame" x="20" y="213" width="374" height="20"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hashes per second: None" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JWm-Oo-b1J">
+                                <rect key="frame" x="20" y="241" width="374" height="20"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dOE-qQ-0rH">
+                                <rect key="frame" x="117" y="801" width="180" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="9IP-57-5sV"/>
+                                    <constraint firstAttribute="width" constant="180" id="rBW-x2-HrR"/>
+                                </constraints>
+                                <state key="normal" title="Start">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="hash:" destination="lNS-Oi-JdL" eventType="touchUpInside" id="DFU-OA-PGb"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hash: None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkj-MM-bFb">
+                                <rect key="frame" x="20" y="269" width="374" height="20"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="K8p-Kb-Pah" firstAttribute="centerY" secondItem="EMg-LY-L23" secondAttribute="centerY" id="2k6-J6-xHR"/>
+                            <constraint firstItem="qsT-kZ-AFn" firstAttribute="trailing" secondItem="vHr-F6-Ntz" secondAttribute="trailing" constant="20" id="5Oe-JD-yM5"/>
+                            <constraint firstItem="qsT-kZ-AFn" firstAttribute="bottom" secondItem="dOE-qQ-0rH" secondAttribute="bottom" constant="11" id="6tQ-QK-IB0"/>
+                            <constraint firstItem="pkj-MM-bFb" firstAttribute="top" secondItem="JWm-Oo-b1J" secondAttribute="bottom" constant="8" id="Bux-Mb-sKZ"/>
+                            <constraint firstItem="qsT-kZ-AFn" firstAttribute="trailing" secondItem="jyb-Tm-985" secondAttribute="trailing" constant="20" id="Hhf-NA-TVC"/>
+                            <constraint firstItem="vHr-F6-Ntz" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="Iev-IL-AzC"/>
+                            <constraint firstItem="Wc6-Hm-x7L" firstAttribute="top" secondItem="vxM-bk-u48" secondAttribute="bottom" constant="17" id="JmT-JI-UYJ"/>
+                            <constraint firstItem="vHr-F6-Ntz" firstAttribute="top" secondItem="K8p-Kb-Pah" secondAttribute="bottom" constant="18" id="Jqj-Vp-uPF"/>
+                            <constraint firstItem="Cht-Un-RUE" firstAttribute="top" secondItem="qsT-kZ-AFn" secondAttribute="top" constant="38" id="NlA-cu-udO"/>
+                            <constraint firstItem="K8p-Kb-Pah" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="55" id="Qr6-bs-Vkx"/>
+                            <constraint firstItem="qsT-kZ-AFn" firstAttribute="trailing" secondItem="K8p-Kb-Pah" secondAttribute="trailing" constant="54" id="RZp-dn-1eC"/>
+                            <constraint firstItem="JWm-Oo-b1J" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="RZs-xE-U4p"/>
+                            <constraint firstItem="pkj-MM-bFb" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="akO-ro-99K"/>
+                            <constraint firstItem="dOE-qQ-0rH" firstAttribute="centerX" secondItem="EMg-LY-L23" secondAttribute="centerX" id="dpf-3a-tsa"/>
+                            <constraint firstItem="qsT-kZ-AFn" firstAttribute="trailing" secondItem="pkj-MM-bFb" secondAttribute="trailing" constant="20" id="eni-k4-zUL"/>
+                            <constraint firstItem="jyb-Tm-985" firstAttribute="top" secondItem="Wc6-Hm-x7L" secondAttribute="bottom" constant="8" id="fL2-K5-jHz"/>
+                            <constraint firstItem="Wc6-Hm-x7L" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="j3u-wC-7CF"/>
+                            <constraint firstItem="Cht-Un-RUE" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="obF-IB-pYR"/>
+                            <constraint firstItem="jyb-Tm-985" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="pFm-QE-h0I"/>
+                            <constraint firstItem="vxM-bk-u48" firstAttribute="top" secondItem="Cht-Un-RUE" secondAttribute="bottom" constant="35" id="qdU-oS-CWe"/>
+                            <constraint firstItem="qsT-kZ-AFn" firstAttribute="trailing" secondItem="JWm-Oo-b1J" secondAttribute="trailing" constant="20" id="rtE-wl-ZgO"/>
+                            <constraint firstItem="qsT-kZ-AFn" firstAttribute="trailing" secondItem="Wc6-Hm-x7L" secondAttribute="trailing" constant="20" id="seJ-2l-IJw"/>
+                            <constraint firstItem="JWm-Oo-b1J" firstAttribute="top" secondItem="jyb-Tm-985" secondAttribute="bottom" constant="8" id="x11-pG-FqU"/>
+                            <constraint firstItem="vxM-bk-u48" firstAttribute="leading" secondItem="qsT-kZ-AFn" secondAttribute="leading" constant="20" id="yrs-RE-z6G"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="qsT-kZ-AFn"/>
+                    </view>
+                    <connections>
+                        <outlet property="hashview" destination="pkj-MM-bFb" id="1Xg-Cd-6PD"/>
+                        <outlet property="passView" destination="jyb-Tm-985" id="1oR-fu-Wvv"/>
+                        <outlet property="password" destination="Wc6-Hm-x7L" id="1pt-Qe-klI"/>
+                        <outlet property="per_second" destination="JWm-Oo-b1J" id="fSF-tP-9Pu"/>
+                        <outlet property="segmentedControl" destination="vHr-F6-Ntz" id="GSx-Ik-mUt"/>
+                        <outlet property="userHash" destination="K8p-Kb-Pah" id="OpW-9T-IQb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JT1-jS-C8X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="650.72463768115949" y="65.625"/>
+        </scene>
+    </scenes>
+</document>

@@ -32,6 +32,7 @@ struct Sha512 {
         autoreleasepool(){
             var digest = [UInt8](repeating: 0, count:Int(CC_SHA512_DIGEST_LENGTH))
             CC_SHA512_Final(&digest, context)
+            context.deallocate()
             return Data(bytes: digest)
         }
     }
@@ -56,6 +57,7 @@ struct Sha256 {
         autoreleasepool(){
             var digest = [UInt8](repeating: 0, count:Int(CC_SHA256_DIGEST_LENGTH))
             CC_SHA256_Final(&digest, context)
+            context.deallocate()
             return Data(bytes: digest)
         }
     }
@@ -80,6 +82,8 @@ extension String {
         return self.data(using: .utf8)!.sha512()
     }
     var md5: String {
+        let context = UnsafeMutablePointer<CC_MD5_CTX>.allocate(capacity:1)
+        CC_MD5_Init(context)
         let data = Data(self.utf8)
         let hash = data.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) -> [UInt8] in
             var hash = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
@@ -92,6 +96,7 @@ extension String {
             print("string contains special characters")
             return "Error, hash is invalid"
         }
+        context.deallocate()
         return hashmd5
     }
     func sha256() -> Data {
@@ -177,43 +182,45 @@ class ViewController: UIViewController {
     }
     
     @IBAction func passwordHashFunction(_ sender: Any) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "Notice", message: "Please input a password", preferredStyle: UIAlertController.Style.alert)
-            alert.addTextField(configurationHandler: self.configurationTextField)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
-                self.dismiss(animated: true, completion: {
-                    if self.textField?.text == nil || self.textField?.text! == ""{
-                        let alert2 = UIAlertController(title: "Error", message: "Please input a password.", preferredStyle: .alert)
-                        alert2.addAction(UIKit.UIAlertAction(title: "OK", style: .default, handler: { action in
-                        }))
-                        self.present(alert2, animated: true, completion: nil)
-                    } else {
-                        print("hashing")
-                        var hash: String = ""
-                        let inputtedText = self.textField?.text
-                        hash = self.getHashFromType(inputtedText!)
-                        UIPasteboard.general.string = hash
-                        let alert2 = UIAlertController(title: "Notice", message: "\(self.hashMethod): \(hash)\n\nCopied to clipboard!", preferredStyle: .alert)
-                        alert2.addAction(UIKit.UIAlertAction(title: "OK", style: .default, handler: { action in
-                              switch action.style{
-                              case .default:
-                                    print("default")
+        autoreleasepool() {
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Notice", message: "Please input a password", preferredStyle: UIAlertController.Style.alert)
+                alert.addTextField(configurationHandler: self.configurationTextField)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+                    self.dismiss(animated: true, completion: {
+                        if self.textField?.text == nil || self.textField?.text! == ""{
+                            let alert2 = UIAlertController(title: "Error", message: "Please input a password.", preferredStyle: .alert)
+                            alert2.addAction(UIKit.UIAlertAction(title: "OK", style: .default, handler: { action in
+                            }))
+                            self.present(alert2, animated: true, completion: nil)
+                        } else {
+                            print("hashing")
+                            var hash: String = ""
+                            let inputtedText = self.textField?.text
+                            hash = self.getHashFromType(inputtedText!)
+                            UIPasteboard.general.string = hash
+                            let alert2 = UIAlertController(title: "Notice", message: "\(self.hashMethod): \(hash)\n\nCopied to clipboard!", preferredStyle: .alert)
+                            alert2.addAction(UIKit.UIAlertAction(title: "OK", style: .default, handler: { action in
+                                  switch action.style{
+                                  case .default:
+                                        print("default")
 
-                              case .cancel:
-                                    print("cancel")
+                                  case .cancel:
+                                        print("cancel")
 
-                              case .destructive:
-                                    print("destructive")
-                              @unknown default:
-                                break
-                            }}))
-                        self.present(alert2, animated: true, completion: nil)
-                        
-                    }
-                })
-            }))
-            self.present(alert, animated: true, completion: nil)
+                                  case .destructive:
+                                        print("destructive")
+                                  @unknown default:
+                                    break
+                                }}))
+                            self.present(alert2, animated: true, completion: nil)
+                            
+                        }
+                    })
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
     
@@ -250,140 +257,142 @@ class ViewController: UIViewController {
     }
     
     @IBAction func hash(_ sender: Any) {
-        DispatchQueue.global(qos: .userInteractive).async {
-            var actualPassword: String = ""
-            var timeTook: Double = 0.0
-            var canRunWild = true
-            print("Starting hash crack, this may take a while!")
-            let time = CFAbsoluteTimeGetCurrent()
-            let filePath = Bundle.main.path(forResource: "10-million-passwords", ofType: "txt")
-            let path = filePath
-            var pass_hash: String = ""
-            
-            var didFindPassword = false
-            DispatchQueue.main.async {
-                if self.userHash.text == nil || self.userHash.text == ""{
-                    DispatchQueue.main.async {
-                            let alert = UIAlertController(title: "Error", message: "Please input a hash!", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                            switch action.style{
-                            case .default:
-                                print("default")
-                            case .cancel:
-                                print("cancel")
+        autoreleasepool(){
+            DispatchQueue.global(qos: .userInteractive).async {
+                var actualPassword: String = ""
+                var timeTook: Double = 0.0
+                var canRunWild = true
+                print("Starting hash crack, this may take a while!")
+                let time = CFAbsoluteTimeGetCurrent()
+                let filePath = Bundle.main.path(forResource: "10-million-passwords", ofType: "txt")
+                let path = filePath
+                var pass_hash: String = ""
+                
+                var didFindPassword = false
+                DispatchQueue.main.async {
+                    if self.userHash.text == nil || self.userHash.text == ""{
+                        DispatchQueue.main.async {
+                                let alert = UIAlertController(title: "Error", message: "Please input a hash!", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                                switch action.style{
+                                case .default:
+                                    print("default")
+                                case .cancel:
+                                    print("cancel")
 
-                            case .destructive:
-                                print("destructive")
-                            @unknown default:
-                                break
-                            }}))
-                        self.present(alert, animated: true, completion: nil)
-                    }
-                    return
-                } else {
-                    canRunWild = true
-                    DispatchQueue.main.async {
-                        pass_hash = self.userHash.text!
-                    }
-                    DispatchQueue.global(qos: .userInteractive).async {
-                        if canRunWild || pass_hash != ""{
-                            if freopen(path, "r", stdin) == nil {
-                                perror(path)
-                            }
-                            
-                            var passwordsCrackedCache = 0
-                            var time_ = CFAbsoluteTimeGetCurrent()
-                            
-                            var hash: String
-                            var i = 0
-                            //now start :o
-                            while let line = readLine() {
-                                DispatchQueue.main.async {
-                                    self.password.text = "Password: \(line)"
-                                }
-                                i+=1
-                                passwordsCrackedCache+=1
-                                switch line {
-                                case "":
-                                    print("Detected blank line, not trying to read that.")
-                                    self.canread = false
-                                default:
-                                    self.canread = true
+                                case .destructive:
+                                    print("destructive")
+                                @unknown default:
                                     break
-                                }
-                                hash = self.getHashFromType(line)
-                                DispatchQueue.main.async {
-                                    switch self.canread{
-                                    case true:
-                                        self.hashview.text = "Hash: \(hash)"
-                                    default:
-                                        self.hashview.text = "Hash: None"
-                                    }
+                                }}))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                        return
+                    } else {
+                        canRunWild = true
+                        DispatchQueue.main.async {
+                            pass_hash = self.userHash.text!
+                        }
+                        DispatchQueue.global(qos: .userInteractive).async {
+                            if canRunWild || pass_hash != ""{
+                                if freopen(path, "r", stdin) == nil {
+                                    perror(path)
                                 }
                                 
-                                switch hash {
-                                case pass_hash:
-                                    print(hash)
-                                    timeTook = CFAbsoluteTimeGetCurrent() - time
-                                    print("We got a match!\nPassword is \(line)\nFinished in \(timeTook) seconds, processed \(i) passwords!\nAt a average of \(Double(i) / timeTook) passwords a second")
-                                    actualPassword = line
-                                    didFindPassword = true
-                                    switch didFindPassword {
-                                    case true:
-                                        DispatchQueue.main.async {
-                                            let alert = UIAlertController(title: "Notice", message: "We got a match!\nPassword is \(actualPassword)\nFinished in \(timeTook) seconds, processed \(i) passwords!\nAt a average of \(Double(i) / timeTook) passwords a second", preferredStyle: .alert)
-                                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                                                  switch action.style{
-                                                  case .default:
-                                                        print("default")
-
-                                                  case .cancel:
-                                                        print("cancel")
-
-                                                  case .destructive:
-                                                        print("destructive")
-                                                  @unknown default:
-                                                    break
-                                                }}))
-                                            self.present(alert, animated: true, completion: nil)
-                                        }
+                                var passwordsCrackedCache = 0
+                                var time_ = CFAbsoluteTimeGetCurrent()
+                                
+                                var hash: String
+                                var i = 0
+                                //now start :o
+                                while let line = readLine() {
+                                    DispatchQueue.main.async {
+                                        self.password.text = "Password: \(line)"
+                                    }
+                                    i+=1
+                                    passwordsCrackedCache+=1
+                                    switch line {
+                                    case "":
+                                        print("Detected blank line, not trying to read that.")
+                                        self.canread = false
                                     default:
+                                        self.canread = true
                                         break
                                     }
-                                    return
-                                default:
+                                    hash = self.getHashFromType(line)
                                     DispatchQueue.main.async {
-                                        self.passView.text = "Hashes scanned: \(i)"
+                                        switch self.canread{
+                                        case true:
+                                            self.hashview.text = "Hash: \(hash)"
+                                        default:
+                                            self.hashview.text = "Hash: None"
+                                        }
                                     }
-                                    DispatchQueue.main.async {
-                                        if CFAbsoluteTimeGetCurrent() >= time_ + 1{
-                                            self.per_second.text = "Hashes per second: \(Double(passwordsCrackedCache))"
-                                            passwordsCrackedCache = 0
-                                            time_ = CFAbsoluteTimeGetCurrent()
+                                    
+                                    switch hash {
+                                    case pass_hash:
+                                        print(hash)
+                                        timeTook = CFAbsoluteTimeGetCurrent() - time
+                                        print("We got a match!\nPassword is \(line)\nFinished in \(timeTook) seconds, processed \(i) passwords!\nAt a average of \(Double(i) / timeTook) passwords a second")
+                                        actualPassword = line
+                                        didFindPassword = true
+                                        switch didFindPassword {
+                                        case true:
+                                            DispatchQueue.main.async {
+                                                let alert = UIAlertController(title: "Notice", message: "We got a match!\nPassword is \(actualPassword)\nFinished in \(timeTook) seconds, processed \(i) passwords!\nAt a average of \(Double(i) / timeTook) passwords a second", preferredStyle: .alert)
+                                                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                                                      switch action.style{
+                                                      case .default:
+                                                            print("default")
+
+                                                      case .cancel:
+                                                            print("cancel")
+
+                                                      case .destructive:
+                                                            print("destructive")
+                                                      @unknown default:
+                                                        break
+                                                    }}))
+                                                self.present(alert, animated: true, completion: nil)
+                                            }
+                                        default:
+                                            break
+                                        }
+                                        return
+                                    default:
+                                        DispatchQueue.main.async {
+                                            self.passView.text = "Hashes scanned: \(i)"
+                                        }
+                                        DispatchQueue.main.async {
+                                            if CFAbsoluteTimeGetCurrent() >= time_ + 1{
+                                                self.per_second.text = "Hashes per second: \(Double(passwordsCrackedCache))"
+                                                passwordsCrackedCache = 0
+                                                time_ = CFAbsoluteTimeGetCurrent()
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            switch didFindPassword {
-                            case true:
-                                print("Finished")
-                            default:
-                                DispatchQueue.main.async {
-                                    let alert = UIAlertController(title: "Notice", message: "We was unable to find a password with that hash.", preferredStyle: .alert)
-                                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                                          switch action.style{
-                                          case .default:
-                                                print("default")
+                                switch didFindPassword {
+                                case true:
+                                    print("Finished")
+                                default:
+                                    DispatchQueue.main.async {
+                                        let alert = UIAlertController(title: "Notice", message: "We was unable to find a password with that hash.", preferredStyle: .alert)
+                                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                                              switch action.style{
+                                              case .default:
+                                                    print("default")
 
-                                          case .cancel:
-                                                print("cancel")
+                                              case .cancel:
+                                                    print("cancel")
 
-                                          case .destructive:
-                                                print("destructive")
-                                          @unknown default:
-                                            break
-                                        }}))
-                                    self.present(alert, animated: true, completion: nil)
+                                              case .destructive:
+                                                    print("destructive")
+                                              @unknown default:
+                                                break
+                                            }}))
+                                        self.present(alert, animated: true, completion: nil)
+                                    }
                                 }
                             }
                         }
